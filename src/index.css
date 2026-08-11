@@ -1,0 +1,216 @@
+:root {
+  --hh-green: #063B21;
+  --hh-green-dark: #021B0F;
+  --hh-yellow: #F9D312;
+  --hh-pink: #FF3B9A;
+  --hh-cream: #FAF7EE;
+  --hh-white: #FFFFFF;
+  --card-width: 430px;
+  --card-height: 650px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #02140A;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(6, 59, 33, 0.35) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255, 59, 154, 0.1) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(249, 211, 18, 0.05) 0%, transparent 50%);
+  background-attachment: fixed;
+  color: var(--hh-cream);
+  overflow-x: hidden;
+}
+
+/* Custom Typography classes */
+.retro-serif {
+  font-family: 'DM Serif Display', serif;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.grotesk {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--hh-green-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--hh-green);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hh-yellow);
+}
+
+/* Glassmorphism control panel */
+.glass-panel {
+  background: rgba(6, 59, 33, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(250, 247, 238, 0.12);
+  border-radius: 24px;
+}
+
+/* Light placeholder style for inputs */
+input::placeholder {
+  color: rgba(250, 247, 238, 0.35) !important;
+  font-weight: 500 !important;
+  font-style: normal;
+}
+
+/* Custom ranges styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: rgba(250, 247, 238, 0.1);
+  border-radius: 3px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--hh-yellow);
+  cursor: pointer;
+  border: 2px solid var(--hh-green-dark);
+  transition: transform 0.1s, background-color 0.1s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: var(--hh-pink);
+}
+
+/* Animation effects */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+
+.float-anim {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Responsive Layout Components */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 32px;
+  background-color: rgba(2, 20, 10, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(250, 247, 238, 0.1);
+  z-index: 20;
+}
+
+.main-workstation {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(360px, 460px) 1fr;
+  padding: 24px;
+  gap: 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-canvas-box {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 720px;
+  background-color: rgba(3, 32, 17, 0.2);
+  border-radius: 24px;
+  border: 1.5px solid rgba(250, 247, 238, 0.06);
+  position: relative;
+  overflow: hidden;
+  padding: 24px 0;
+  box-sizing: border-box;
+}
+
+.card-scale-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.action-buttons-group {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+  width: 100%;
+  max-width: 430px;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* Mobile & Tablet Responsive Queries (< 920px) */
+@media (max-width: 920px) {
+  .app-header {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .header-meta-group {
+    width: 100%;
+    display: flex;
+    justify-content: space-between !important;
+    border-top: 1px solid rgba(250, 247, 238, 0.08);
+    padding-top: 8px;
+    box-sizing: border-box;
+  }
+
+  .main-workstation {
+    grid-template-columns: 1fr !important;
+    padding: 12px 10px !important;
+    gap: 16px !important;
+  }
+
+  .glass-panel {
+    padding: 18px 14px !important;
+    border-radius: 18px !important;
+  }
+
+  .card-canvas-box {
+    min-height: auto !important;
+    padding: 16px 8px !important;
+    border-radius: 18px !important;
+  }
+
+  .card-scale-wrapper {
+    transform: scale(calc(min(1, (100vw - 32px) / 430)));
+    transform-origin: top center;
+    height: calc(650px * min(1, (100vw - 32px) / 430));
+    margin-bottom: 8px;
+  }
+
+  .action-buttons-group {
+    flex-direction: column !important;
+    width: 100% !important;
+    padding: 0 4px !important;
+    gap: 10px !important;
+  }
+
+  .action-buttons-group button {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 14px 16px !important;
+    font-size: 14px !important;
+  }
+}
