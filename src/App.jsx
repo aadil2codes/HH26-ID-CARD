@@ -9,7 +9,7 @@ export default function App() {
   const [formName, setFormName] = useState("");
   const [formRole, setFormRole] = useState("");
   const [formBuilderId, setFormBuilderId] = useState(() => `HH-GOA-${Math.floor(1000 + Math.random() * 9000)}`);
-  const [formQrUrl, setFormQrUrl] = useState("https://hackerhouse.goa");
+  const [formQrUrl, setFormQrUrl] = useState("https://hh-26-id-card-gen.vercel.app/");
   const [formAvatarUrl, setFormAvatarUrl] = useState("");
   
   // Image framing states
@@ -21,7 +21,7 @@ export default function App() {
   const [genName, setGenName] = useState("");
   const [genRole, setGenRole] = useState("");
   const [genBuilderId, setGenBuilderId] = useState(() => `HH-GOA-${Math.floor(1000 + Math.random() * 9000)}`);
-  const [genQrUrl, setGenQrUrl] = useState("https://hackerhouse.goa");
+  const [genQrUrl, setGenQrUrl] = useState("https://hh-26-id-card-gen.vercel.app/");
   const [genAvatarUrl, setGenAvatarUrl] = useState("");
   const [genZoom, setGenZoom] = useState(1.2);
   const [genOffsetX, setGenOffsetX] = useState(0);
@@ -71,6 +71,11 @@ export default function App() {
     
     // Switch to preview mode
     setHasGenerated(true);
+
+    // Auto-scroll to card on mobile devices
+    setTimeout(() => {
+      cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 150);
   };
 
   // Helper: Fast Base64 to Blob converter without network overhead
@@ -478,16 +483,7 @@ export default function App() {
       </main>
 
       {/* 3. Aesthetic Enhanced Global Footer */}
-      <footer 
-        style={{
-          borderTop: '1px solid rgba(250, 247, 238, 0.12)',
-          padding: '28px 32px 32px 32px',
-          backgroundColor: 'rgba(2, 18, 9, 0.95)',
-          backdropFilter: 'blur(16px)',
-          marginTop: '48px',
-          zIndex: 10
-        }}
-      >
+      <footer className="app-footer">
         <div 
           style={{ 
             maxWidth: '1200px', 

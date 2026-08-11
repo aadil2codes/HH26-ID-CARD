@@ -14,7 +14,7 @@ export default function CardFront({
   name = "AADIL", 
   role = "FULL STACK DEVELOPER", 
   builderId = "HH-GOA-7XXX", 
-  qrUrl = "https://hackerhouse.goa", 
+  qrUrl = "https://hh-26-id-card-gen.vercel.app/", 
   avatarUrl = "", 
   zoom = 1.2, 
   offsetX = 0, 
@@ -472,12 +472,12 @@ export default function CardFront({
               }}
             >
               <QRCodeSVG 
-                value={qrUrl || "https://hackerhouse.goa"} 
+                value={qrUrl || "https://hh-26-id-card-gen.vercel.app/"} 
                 size={58} 
                 bgColor="#FFFFFF" 
                 fgColor="#063B21" 
-                level="M"
-                includeMargin={false}
+                level="M" 
+                includeMargin={false} 
               />
             </div>
 
