@@ -149,7 +149,7 @@ export default function App() {
 
   const getShareText = () => {
     const appUrl = "https://hh-26-id-card-gen.vercel.app/";
-    return `🌴 Hacker House Goa 2026, here I come!\n\n🪪 Just created my own Builder Card for the Goa journey.\n👤 ${genName || 'Builder'} • ID: ${genBuilderId || 'HH-GOA-2026'}\n\nExcited to meet fellow builders, learn, create, and build something meaningful together in Goa! 🚀\n\nCreate your own Builder Card:\n${appUrl}\n\n#FrameInGoa #HHGoa2026 #HackerHouse`;
+    return `🌴 Hacker House Goa 2026, here I come!\n\n🪪 Just created my own Builder Card for the Goa journey.\n👤 ${genName || 'Builder'} • ID: ${genBuilderId || 'HH-GOA-2026'}\n\nExcited to meet fellow builders, learn, create, and build something meaningful together in Goa! 🚀\n\nCreate your own Builder Card:\n${appUrl}`;
   };
 
   // Direct 1-Click Platform Sharer
