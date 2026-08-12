@@ -32,6 +32,23 @@ export default function App() {
   const [errors, setErrors] = useState({});
   const [shareNotice, setShareNotice] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
+  const [cardScale, setCardScale] = useState(1);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const screenW = window.innerWidth;
+      if (screenW < 480) {
+        const availableW = Math.min(screenW - 32, 430);
+        setCardScale(Math.max(0.6, availableW / 430));
+      } else {
+        setCardScale(1);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Element Ref for downloading
   const cardRef = useRef(null);
@@ -124,40 +141,59 @@ export default function App() {
 
   // Ultra-Fast Native Share & Instant Copy
   const handleShare = async () => {
-    const textToCopy = `Hacker House Goa 2026 Builder Pass! 🌴 #${genBuilderId || 'HH-GOA-2026'} #FRAMEINGOA`;
+    const appUrl = "https://hh-26-id-card-gen.vercel.app/";
+    const textToShare = `🌴 Built my Hacker Goa House Builder Card!\n\n👤 ${genName || 'Builder'}\n🪪 Builder ID: #${genBuilderId || 'HH-GOA-2026'}\n\nExcited to build, ship, and connect with amazing builders in Goa.\n\nCreate your own Builder Card:\n${appUrl}\n\n#FrameInGoa #HHGoa2026`;
     
-    if (cardRef.current) {
+    // Check for native mobile share capability
+    if (navigator.share) {
       try {
-        const dataUrl = await toPng(cardRef.current, {
-          pixelRatio: 2,
-          cacheBust: false,
-          skipFonts: true,
-          style: { transform: 'none' }
-        });
-
-        const blob = base64ToBlob(dataUrl);
-        const file = new File([blob], 'HackerHouseGoa_Builder_Pass.png', { type: 'image/png' });
-
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: 'Hacker House Goa 2026 Builder Pass',
-            text: textToCopy
+        if (cardRef.current && navigator.canShare) {
+          const dataUrl = await toPng(cardRef.current, {
+            pixelRatio: 2,
+            cacheBust: false,
+            skipFonts: true,
+            style: { transform: 'none' }
           });
-          showShareNotification("Pass shared successfully!");
-          return;
+          const blob = base64ToBlob(dataUrl);
+          const file = new File([blob], `${(genName || 'Builder').trim().replace(/\s+/g, '_')}_HHGoa2026_ID.png`, { type: 'image/png' });
+
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              title: 'Hacker House Goa 2026 Builder Card',
+              text: textToShare,
+              files: [file]
+            });
+            showShareNotification("Card shared successfully!");
+            return;
+          }
         }
-      } catch (e) {
-        console.warn("Native file sharing skipped, falling back to clipboard.");
+
+        // Text & URL share fallback
+        await navigator.share({
+          title: 'Hacker House Goa 2026 Builder Card',
+          text: textToShare,
+          url: appUrl
+        });
+        showShareNotification("Card shared successfully!");
+        return;
+      } catch (err) {
+        if (err.name === 'AbortError') {
+          return; // User dismissed share dialog
+        }
+        console.warn("Native share fallback triggered:", err);
       }
     }
 
+    // Fallback: Copy to clipboard and launch X (Twitter) composer
     try {
-      await navigator.clipboard.writeText(textToCopy);
-      showShareNotification("Details copied to clipboard!");
+      await navigator.clipboard.writeText(textToShare);
+      showShareNotification("Post template copied! Opening X...");
     } catch (err) {
-      showShareNotification("Unable to copy to clipboard.");
+      showShareNotification("Opening X composer...");
     }
+
+    const twitterIntent = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}`;
+    window.open(twitterIntent, '_blank', 'noopener,noreferrer');
   };
 
   const showShareNotification = (msg) => {
@@ -413,18 +449,40 @@ export default function App() {
                 </div>
 
                 {/* Generated Card Scaled Container for Mobile / Desktop */}
-                <div className="card-scale-wrapper float-anim">
-                  <div ref={cardRef}>
-                    <CardFront 
-                      name={genName}
-                      role={genRole}
-                      builderId={genBuilderId}
-                      qrUrl={genQrUrl}
-                      avatarUrl={genAvatarUrl}
-                      zoom={genZoom}
-                      offsetX={genOffsetX}
-                      offsetY={genOffsetY}
-                    />
+                <div 
+                  style={{ 
+                    width: `${430 * cardScale}px`, 
+                    height: `${650 * cardScale}px`, 
+                    position: 'relative',
+                    maxWidth: '100%',
+                    margin: '0 auto',
+                    overflow: 'hidden'
+                  }}
+                  className="float-anim"
+                >
+                  <div 
+                    style={{ 
+                      width: '430px', 
+                      height: '650px', 
+                      transform: `scale(${cardScale})`, 
+                      transformOrigin: 'top left',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0
+                    }}
+                  >
+                    <div ref={cardRef}>
+                      <CardFront 
+                        name={genName}
+                        role={genRole}
+                        builderId={genBuilderId}
+                        qrUrl={genQrUrl}
+                        avatarUrl={genAvatarUrl}
+                        zoom={genZoom}
+                        offsetX={genOffsetX}
+                        offsetY={genOffsetY}
+                      />
+                    </div>
                   </div>
                 </div>
 
