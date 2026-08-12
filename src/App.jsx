@@ -184,42 +184,20 @@ export default function App() {
     setIsShareModalOpen(false);
   };
 
-  // Ultra-Fast Native Share & Modal Trigger
+  // Ultra-Fast Text & Link Share (User uploads card manually)
   const handleShare = async () => {
     const appUrl = "https://hh-26-id-card-gen.vercel.app/";
     const textToShare = getShareText();
     
-    // Check for native mobile share capability
+    // Check for native mobile share capability (Text & URL only)
     if (navigator.share) {
       try {
-        if (cardRef.current && navigator.canShare) {
-          const dataUrl = await toPng(cardRef.current, {
-            pixelRatio: 2,
-            cacheBust: false,
-            skipFonts: true,
-            style: { transform: 'none' }
-          });
-          const blob = base64ToBlob(dataUrl);
-          const file = new File([blob], `${(genName || 'Builder').trim().replace(/\s+/g, '_')}_HHGoa2026_ID.png`, { type: 'image/png' });
-
-          if (navigator.canShare({ files: [file] })) {
-            await navigator.share({
-              title: 'Hacker House Goa 2026 Builder Card',
-              text: textToShare,
-              files: [file]
-            });
-            showShareNotification("Card shared successfully!");
-            return;
-          }
-        }
-
-        // Text & URL share fallback
         await navigator.share({
           title: 'Hacker House Goa 2026 Builder Card',
           text: textToShare,
           url: appUrl
         });
-        showShareNotification("Card shared successfully!");
+        showShareNotification("Shared successfully!");
         return;
       } catch (err) {
         if (err.name === 'AbortError') {
