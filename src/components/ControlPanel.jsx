@@ -472,27 +472,22 @@ export default function ControlPanel({
           <input 
             type="text" 
             value={builderId} 
-            onChange={(e) => setBuilderId(e.target.value)} 
-            placeholder="e.g. HH-GOA-4829"
-            maxLength={14}
+            readOnly
             style={{
               padding: '10px 14px',
-              backgroundColor: 'rgba(3, 32, 17, 0.5)',
-              border: errors.builderId ? '1.5px solid var(--hh-pink)' : '1.5px solid rgba(250, 246, 240, 0.15)',
+              backgroundColor: 'rgba(3, 32, 17, 0.65)',
+              border: '1.5px solid rgba(250, 246, 240, 0.12)',
               borderRadius: '12px',
               color: 'var(--hh-white)',
-              fontSize: '13px',
-              fontWeight: '600',
+              fontSize: '13.5px',
+              fontWeight: '800',
               fontFamily: "'Space Grotesk', sans-serif",
               outline: 'none',
-              transition: 'border-color 0.2s'
+              cursor: 'default',
+              userSelect: 'none',
+              letterSpacing: '0.04em'
             }}
           />
-          {errors.builderId && (
-            <span className="grotesk text-[9.5px] font-bold text-[var(--hh-pink)]">
-              ⚠️ {errors.builderId}
-            </span>
-          )}
         </div>
       </div>
 

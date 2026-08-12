@@ -142,7 +142,7 @@ export default function App() {
   // Ultra-Fast Native Share & Instant Copy
   const handleShare = async () => {
     const appUrl = "https://hh-26-id-card-gen.vercel.app/";
-    const textToShare = `🌴 Built my Hacker Goa House Builder Card!\n\n👤 ${genName || 'Builder'}\n🪪 Builder ID: #${genBuilderId || 'HH-GOA-2026'}\n\nExcited to build, ship, and connect with amazing builders in Goa.\n\nCreate your own Builder Card:\n${appUrl}\n\n#FrameInGoa #HHGoa2026`;
+    const textToShare = `🌴 Hacker House Goa 2026, here I come!\n\n🪪 Just created my own Builder Card for the Goa journey.\n👤 ${genName || 'Builder'} • #${genBuilderId || 'HH-GOA-2026'}\n\nExcited to meet fellow builders, learn, create, and build something meaningful together in Goa! 🚀\n\nCreate your own Builder Card:\n${appUrl}\n\n#FrameInGoa #HHGoa2026 #HackerHouse`;
     
     // Check for native mobile share capability
     if (navigator.share) {
