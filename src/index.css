@@ -204,18 +204,19 @@ input[type="range"]::-webkit-slider-thumb:hover {
   }
 
   .action-buttons-group {
-    flex-direction: column !important;
+    flex-direction: row !important;
     width: 100% !important;
-    padding: 0 4px !important;
-    gap: 8px !important;
-    margin-top: 4px !important;
+    padding: 0 !important;
+    gap: 6px !important;
+    margin-top: 8px !important;
   }
 
   .action-buttons-group button {
-    width: 100% !important;
+    flex: 1 !important;
     justify-content: center !important;
-    padding: 13px 16px !important;
-    font-size: 13.5px !important;
+    padding: 11px 6px !important;
+    font-size: 11.5px !important;
+    white-space: nowrap !important;
   }
 
   .app-footer {

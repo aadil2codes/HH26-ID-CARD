@@ -4,6 +4,13 @@ import { Star, Download, Share2, Clipboard, Sparkles } from 'lucide-react';
 import CardFront from './components/CardFront';
 import ControlPanel from './components/ControlPanel';
 
+// Official X (Twitter) Icon Component
+const XIcon = ({ size = 15, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={color} style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
+
 export default function App() {
   // 1. Form States (Active inputs from user)
   const [formName, setFormName] = useState("");
@@ -32,6 +39,7 @@ export default function App() {
   const [errors, setErrors] = useState({});
   const [shareNotice, setShareNotice] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [cardScale, setCardScale] = useState(1);
 
   useEffect(() => {
@@ -139,10 +147,47 @@ export default function App() {
     }
   };
 
-  // Ultra-Fast Native Share & Instant Copy
+  const getShareText = () => {
+    const appUrl = "https://hh-26-id-card-gen.vercel.app/";
+    return `🌴 Hacker House Goa 2026, here I come!\n\n🪪 Just created my own Builder Card for the Goa journey.\n👤 ${genName || 'Builder'} • #${genBuilderId || 'HH-GOA-2026'}\n\nExcited to meet fellow builders, learn, create, and build something meaningful together in Goa! 🚀\n\nCreate your own Builder Card:\n${appUrl}\n\n#FrameInGoa #HHGoa2026 #HackerHouse`;
+  };
+
+  // Direct 1-Click Platform Sharer
+  const shareToPlatform = async (platform) => {
+    const appUrl = "https://hh-26-id-card-gen.vercel.app/";
+    const textToShare = getShareText();
+
+    if (platform === 'x') {
+      const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+      showShareNotification("Opening X to post your pass!");
+    } else if (platform === 'whatsapp') {
+      const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+      showShareNotification("Opening WhatsApp!");
+    } else if (platform === 'telegram') {
+      const url = `https://t.me/share/url?url=${encodeURIComponent(appUrl)}&text=${encodeURIComponent(textToShare)}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+      showShareNotification("Opening Telegram!");
+    } else if (platform === 'linkedin') {
+      const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(appUrl)}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+      showShareNotification("Opening LinkedIn!");
+    } else if (platform === 'copy') {
+      try {
+        await navigator.clipboard.writeText(textToShare);
+        showShareNotification("Post template & link copied to clipboard!");
+      } catch (err) {
+        showShareNotification("Unable to copy.");
+      }
+    }
+    setIsShareModalOpen(false);
+  };
+
+  // Ultra-Fast Native Share & Modal Trigger
   const handleShare = async () => {
     const appUrl = "https://hh-26-id-card-gen.vercel.app/";
-    const textToShare = `🌴 Hacker House Goa 2026, here I come!\n\n🪪 Just created my own Builder Card for the Goa journey.\n👤 ${genName || 'Builder'} • #${genBuilderId || 'HH-GOA-2026'}\n\nExcited to meet fellow builders, learn, create, and build something meaningful together in Goa! 🚀\n\nCreate your own Builder Card:\n${appUrl}\n\n#FrameInGoa #HHGoa2026 #HackerHouse`;
+    const textToShare = getShareText();
     
     // Check for native mobile share capability
     if (navigator.share) {
@@ -180,20 +225,11 @@ export default function App() {
         if (err.name === 'AbortError') {
           return; // User dismissed share dialog
         }
-        console.warn("Native share fallback triggered:", err);
       }
     }
 
-    // Fallback: Copy to clipboard and launch X (Twitter) composer
-    try {
-      await navigator.clipboard.writeText(textToShare);
-      showShareNotification("Post template copied! Opening X...");
-    } catch (err) {
-      showShareNotification("Opening X composer...");
-    }
-
-    const twitterIntent = `https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}`;
-    window.open(twitterIntent, '_blank', 'noopener,noreferrer');
+    // Open options modal if native share not invoked
+    setIsShareModalOpen(true);
   };
 
   const showShareNotification = (msg) => {
@@ -486,51 +522,86 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Action Buttons: High-Res PNG Download & Share */}
-                <div className="action-buttons-group">
+                {/* Action Buttons: Single Row (Download, Post on X, Share/More) */}
+                <div className="action-buttons-group" style={{ display: 'flex', gap: '8px', width: '100%', maxWidth: '430px', marginTop: '10px' }}>
+                  {/* 1. Download Button */}
                   <button 
                     onClick={downloadCard}
                     disabled={isDownloading}
                     style={{
-                      padding: '13px 26px',
+                      flex: '1.2',
+                      padding: '12px 10px',
                       borderRadius: '12px',
                       backgroundColor: 'var(--hh-yellow)',
                       color: 'var(--hh-green-dark)',
                       border: 'none',
-                      fontSize: '13px',
+                      fontSize: '12.5px',
                       fontWeight: '900',
                       fontFamily: 'Space Grotesk',
                       cursor: isDownloading ? 'wait' : 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '8px',
+                      justifyContent: 'center',
+                      gap: '5px',
                       boxShadow: '0 4px 14px rgba(249, 211, 18, 0.3)',
-                      transition: 'transform 0.1s, box-shadow 0.1s'
+                      whiteSpace: 'nowrap'
                     }}
+                    title="Download HD Print-Ready Pass"
                   >
-                    <Download size={16} strokeWidth={2.5} />
-                    <span>{isDownloading ? 'GENERATING HD PNG...' : 'DOWNLOAD PASS (HD PNG)'}</span>
+                    <Download size={15} strokeWidth={2.5} />
+                    <span>{isDownloading ? 'SAVING...' : 'DOWNLOAD'}</span>
                   </button>
 
+                  {/* 2. Direct Post on X Button */}
                   <button 
-                    onClick={handleShare}
+                    onClick={() => shareToPlatform('x')}
                     style={{
-                      padding: '13px 22px',
+                      flex: '1.1',
+                      padding: '12px 10px',
                       borderRadius: '12px',
-                      backgroundColor: 'transparent',
-                      color: 'var(--hh-pink)',
-                      border: '2px solid var(--hh-pink)',
-                      fontSize: '13px',
+                      backgroundColor: '#000000',
+                      color: '#FFFFFF',
+                      border: '1.5px solid rgba(255, 255, 255, 0.25)',
+                      fontSize: '12.5px',
                       fontWeight: '900',
                       fontFamily: 'Space Grotesk',
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '8px',
-                      transition: 'background-color 0.2s'
+                      justifyContent: 'center',
+                      gap: '6px',
+                      boxShadow: '0 4px 14px rgba(0, 0, 0, 0.4)',
+                      whiteSpace: 'nowrap'
                     }}
+                    title="Post directly to X (Twitter)"
                   >
-                    <Share2 size={16} strokeWidth={2.5} />
+                    <XIcon size={14} color="#FFFFFF" />
+                    <span>POST ON 𝕏</span>
+                  </button>
+
+                  {/* 3. Share Button (WhatsApp, Telegram, etc.) */}
+                  <button 
+                    onClick={handleShare}
+                    style={{
+                      flex: '0.9',
+                      padding: '12px 10px',
+                      borderRadius: '12px',
+                      backgroundColor: 'rgba(255, 59, 154, 0.1)',
+                      color: 'var(--hh-pink)',
+                      border: '2px solid var(--hh-pink)',
+                      fontSize: '12.5px',
+                      fontWeight: '900',
+                      fontFamily: 'Space Grotesk',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '5px',
+                      whiteSpace: 'nowrap'
+                    }}
+                    title="Share to WhatsApp, Telegram, LinkedIn, or Copy Link"
+                  >
+                    <Share2 size={15} strokeWidth={2.5} />
                     <span>SHARE</span>
                   </button>
                 </div>
@@ -539,6 +610,169 @@ export default function App() {
           </div>
         </section>
       </main>
+
+      {/* Share Options Popup Modal */}
+      {isShareModalOpen && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+            backdropFilter: 'blur(8px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '16px'
+          }}
+          onClick={() => setIsShareModalOpen(false)}
+        >
+          <div 
+            style={{
+              backgroundColor: '#032011',
+              border: '2px solid rgba(249, 211, 18, 0.4)',
+              borderRadius: '24px',
+              padding: '24px',
+              maxWidth: '400px',
+              width: '100%',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontFamily: 'Space Grotesk', fontSize: '16px', fontWeight: '800', color: 'var(--hh-yellow)' }}>
+                🌴 Share Your Builder Pass
+              </span>
+              <button 
+                onClick={() => setIsShareModalOpen(false)}
+                style={{ background: 'none', border: 'none', color: '#fff', fontSize: '18px', cursor: 'pointer', padding: '4px' }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              {/* X (Twitter) */}
+              <button 
+                onClick={() => shareToPlatform('x')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 14px',
+                  borderRadius: '12px',
+                  backgroundColor: 'rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.18)',
+                  color: '#fff',
+                  fontFamily: 'Space Grotesk',
+                  fontWeight: '700',
+                  fontSize: '13px',
+                  cursor: 'pointer'
+                }}
+              >
+                <XIcon size={15} color="#fff" />
+                <span>Post on 𝕏</span>
+              </button>
+
+              {/* WhatsApp */}
+              <button 
+                onClick={() => shareToPlatform('whatsapp')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 14px',
+                  borderRadius: '12px',
+                  backgroundColor: 'rgba(37, 211, 102, 0.15)',
+                  border: '1px solid rgba(37, 211, 102, 0.35)',
+                  color: '#25D366',
+                  fontFamily: 'Space Grotesk',
+                  fontWeight: '700',
+                  fontSize: '13px',
+                  cursor: 'pointer'
+                }}
+              >
+                <span style={{ fontSize: '16px' }}>💬</span>
+                <span>WhatsApp</span>
+              </button>
+
+              {/* Telegram */}
+              <button 
+                onClick={() => shareToPlatform('telegram')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 14px',
+                  borderRadius: '12px',
+                  backgroundColor: 'rgba(0, 136, 204, 0.15)',
+                  border: '1px solid rgba(0, 136, 204, 0.35)',
+                  color: '#0088CC',
+                  fontFamily: 'Space Grotesk',
+                  fontWeight: '700',
+                  fontSize: '13px',
+                  cursor: 'pointer'
+                }}
+              >
+                <span style={{ fontSize: '16px' }}>✈️</span>
+                <span>Telegram</span>
+              </button>
+
+              {/* LinkedIn */}
+              <button 
+                onClick={() => shareToPlatform('linkedin')}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  padding: '12px 14px',
+                  borderRadius: '12px',
+                  backgroundColor: 'rgba(10, 102, 194, 0.15)',
+                  border: '1px solid rgba(10, 102, 194, 0.35)',
+                  color: '#0A66C2',
+                  fontFamily: 'Space Grotesk',
+                  fontWeight: '700',
+                  fontSize: '13px',
+                  cursor: 'pointer'
+                }}
+              >
+                <span style={{ fontSize: '16px' }}>💼</span>
+                <span>LinkedIn</span>
+              </button>
+            </div>
+
+            {/* Copy Post Button */}
+            <button 
+              onClick={() => shareToPlatform('copy')}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                padding: '13px',
+                borderRadius: '12px',
+                backgroundColor: 'var(--hh-yellow)',
+                color: 'var(--hh-green-dark)',
+                border: 'none',
+                fontFamily: 'Space Grotesk',
+                fontWeight: '900',
+                fontSize: '13px',
+                cursor: 'pointer'
+              }}
+            >
+              <Clipboard size={16} />
+              <span>COPY POST &amp; LINK</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 3. Aesthetic Enhanced Global Footer */}
       <footer className="app-footer">
