@@ -423,7 +423,7 @@ export default function CardFront({
             borderRadius: '16px',
             display: 'grid',
             gridTemplateColumns: '1.1fr 1.35fr',
-            height: '110px',
+            height: '116px',
             boxSizing: 'border-box',
             overflow: 'hidden',
             boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
@@ -438,8 +438,9 @@ export default function CardFront({
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '4px',
-              position: 'relative'
+              padding: '6px 4px',
+              position: 'relative',
+              gap: '4px'
             }}
           >
             <div 
@@ -452,8 +453,8 @@ export default function CardFront({
                 fontWeight: '900',
                 fontFamily: "'Space Grotesk', sans-serif",
                 letterSpacing: '0.06em',
-                marginBottom: '4px',
-                textTransform: 'uppercase'
+                textTransform: 'uppercase',
+                lineHeight: 1.2
               }}
             >
               DIGITAL BUILDER PASS
@@ -473,7 +474,7 @@ export default function CardFront({
             >
               <QRCodeSVG 
                 value={qrUrl || "https://hh-26-id-card-gen.vercel.app/"} 
-                size={58} 
+                size={56} 
                 bgColor="#FFFFFF" 
                 fgColor="#063B21" 
                 level="M" 
@@ -491,14 +492,15 @@ export default function CardFront({
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
-              padding: '4px 6px',
-              position: 'relative'
+              justifyContent: 'space-evenly',
+              padding: '6px 8px',
+              position: 'relative',
+              boxSizing: 'border-box'
             }}
           >
             {/* Shield + Verified Builder Text */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '1px' }}>
-              <svg width="18" height="18" viewBox="0 0 18 20" fill="none">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', lineHeight: 1 }}>
+              <svg width="16" height="16" viewBox="0 0 18 20" fill="none">
                 <path d="M 9 1 C 13 1 16 2.5 16 2.5 C 16 2.5 17 9 15 13 C 13 17 9 19 9 19 C 9 19 5 17 3 13 C 1 9 2 2.5 2 2.5 C 2 2.5 5 1 9 1 Z" stroke="#063B21" strokeWidth="2" fill="#FAF7EE" />
                 <path d="M 6 10 L 8 12 L 12 7" stroke="#FF3B9A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -508,7 +510,8 @@ export default function CardFront({
                   fontSize: '9.5px',
                   fontWeight: '900',
                   color: '#063B21',
-                  letterSpacing: '0.04em'
+                  letterSpacing: '0.04em',
+                  lineHeight: 1
                 }}
               >
                 VERIFIED BUILDER
@@ -523,20 +526,21 @@ export default function CardFront({
                 fontWeight: '900',
                 color: '#FF3B9A',
                 letterSpacing: '0.06em',
-                marginBottom: '2px'
+                lineHeight: 1,
+                margin: '1px 0'
               }}
             >
               {builderId || "HH-GOA-7XXX"}
             </span>
 
             {/* Dotted yellow divider */}
-            <div style={{ width: '86%', borderTop: '1.5px dotted #F9D312', marginBottom: '3px' }} />
+            <div style={{ width: '90%', borderTop: '1.5px dotted #F9D312', margin: '1px 0' }} />
 
             {/* Detailed Barcode with Pink Caps */}
-            <BarcodeWithEndCaps width={138} height={18} />
+            <BarcodeWithEndCaps width={128} height={16} />
 
-            <span style={{ position: 'absolute', left: '6px', bottom: '6px', color: '#F9D312', fontSize: '8px' }}>✦</span>
-            <span style={{ position: 'absolute', right: '6px', bottom: '6px', color: '#F9D312', fontSize: '8px' }}>✦</span>
+            <span style={{ position: 'absolute', left: '6px', bottom: '4px', color: '#F9D312', fontSize: '8px' }}>✦</span>
+            <span style={{ position: 'absolute', right: '6px', bottom: '4px', color: '#F9D312', fontSize: '8px' }}>✦</span>
           </div>
         </div>
 
