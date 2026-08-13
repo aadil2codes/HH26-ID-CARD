@@ -206,7 +206,7 @@ export default function CardFront({
         </div>
 
         {/* ----------------- Subtitle: ✦ BUILDER FIELD PASS ✦ ----------------- */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px', flexShrink: 0 }}>
           <div 
             style={{
               backgroundColor: '#063B21',
@@ -220,11 +220,13 @@ export default function CardFront({
               fontWeight: '900',
               fontFamily: "'Space Grotesk', sans-serif",
               letterSpacing: '0.08em',
-              border: '1.2px solid #021B0F'
+              border: '1.2px solid #021B0F',
+              whiteSpace: 'nowrap',
+              flexShrink: 0
             }}
           >
             <span style={{ color: '#F9D312', fontSize: '9px' }}>✦</span>
-            <span>BUILDER FIELD PASS</span>
+            <span style={{ whiteSpace: 'nowrap' }}>BUILDER FIELD PASS</span>
             <span style={{ color: '#F9D312', fontSize: '9px' }}>✦</span>
           </div>
 
@@ -347,7 +349,7 @@ export default function CardFront({
         >
           {/* Row 1: Name */}
           <div style={{ display: 'flex', alignItems: 'center', padding: '3px 0' }}>
-            <div style={{ width: '132px', display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+            <div style={{ width: '116px', display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
               <div style={{ width: '22px', height: '22px', borderRadius: '50%', backgroundColor: '#FF3B9A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', flexShrink: 0 }}>
                 <User size={13} strokeWidth={2.5} />
               </div>
@@ -359,11 +361,11 @@ export default function CardFront({
             {/* Aligned Vertical Divider */}
             <div style={{ width: '1.5px', height: '14px', backgroundColor: '#063B21', opacity: 0.3, flexShrink: 0 }} />
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: 1, paddingLeft: '10px' }}>
-              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '16px', fontWeight: '900', color: name ? '#063B21' : 'rgba(6, 59, 33, 0.4)', letterSpacing: '0.03em', textTransform: 'uppercase' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: 1, paddingLeft: '10px', minWidth: 0 }}>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '15px', fontWeight: '900', color: name ? '#063B21' : 'rgba(6, 59, 33, 0.4)', letterSpacing: '0.03em', textTransform: 'uppercase', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', width: '100%' }}>
                 {name ? name.toUpperCase() : "ROHIT KUMAR"}
               </span>
-              <span style={{ color: '#FF3B9A', fontSize: '11px', marginLeft: 'auto' }}>✦</span>
+              <span style={{ color: '#FF3B9A', fontSize: '11px', marginLeft: 'auto', flexShrink: 0 }}>✦</span>
             </div>
           </div>
 
@@ -371,7 +373,7 @@ export default function CardFront({
 
           {/* Row 2: Builder Class */}
           <div style={{ display: 'flex', alignItems: 'center', padding: '3px 0' }}>
-            <div style={{ width: '132px', display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+            <div style={{ width: '116px', display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
               <div style={{ width: '22px', height: '22px', borderRadius: '50%', backgroundColor: '#FF3B9A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', flexShrink: 0 }}>
                 <Briefcase size={12} strokeWidth={2.5} />
               </div>
@@ -383,8 +385,8 @@ export default function CardFront({
             {/* Aligned Vertical Divider */}
             <div style={{ width: '1.5px', height: '14px', backgroundColor: '#063B21', opacity: 0.3, flexShrink: 0 }} />
 
-            <div style={{ display: 'flex', alignItems: 'center', flex: 1, paddingLeft: '10px' }}>
-              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '12px', fontWeight: '900', color: role ? '#063B21' : 'rgba(6, 59, 33, 0.4)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+            <div style={{ display: 'flex', alignItems: 'center', flex: 1, paddingLeft: '10px', minWidth: 0 }}>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '11px', fontWeight: '900', color: role ? '#063B21' : 'rgba(6, 59, 33, 0.4)', letterSpacing: '0.04em', textTransform: 'uppercase', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', width: '100%' }}>
                 {role ? role.toUpperCase() : "FULL STACK DEVELOPER"}
               </span>
             </div>
@@ -394,7 +396,7 @@ export default function CardFront({
 
           {/* Row 3: Builder ID */}
           <div style={{ display: 'flex', alignItems: 'center', padding: '3px 0' }}>
-            <div style={{ width: '132px', display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
+            <div style={{ width: '116px', display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
               <div style={{ width: '22px', height: '22px', borderRadius: '50%', backgroundColor: '#FF3B9A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', flexShrink: 0 }}>
                 <Fingerprint size={13} strokeWidth={2.5} />
               </div>
@@ -406,8 +408,8 @@ export default function CardFront({
             {/* Aligned Vertical Divider */}
             <div style={{ width: '1.5px', height: '14px', backgroundColor: '#063B21', opacity: 0.3, flexShrink: 0 }} />
 
-            <div style={{ display: 'flex', alignItems: 'center', flex: 1, paddingLeft: '10px' }}>
-              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '14px', fontWeight: '900', color: '#063B21', letterSpacing: '0.06em' }}>
+            <div style={{ display: 'flex', alignItems: 'center', flex: 1, paddingLeft: '10px', minWidth: 0 }}>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '13.5px', fontWeight: '900', color: '#063B21', letterSpacing: '0.06em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block', width: '100%' }}>
                 {builderId || "HH-GOA-2026"}
               </span>
             </div>
